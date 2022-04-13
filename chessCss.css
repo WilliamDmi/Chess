@@ -1,0 +1,16 @@
+table{
+    border: black solid;
+}
+td{
+    width: 100px;
+    height: 100px;
+    padding: 0;
+}
+.tdBlack{
+    border: black solid;
+    background-color: #2b1b19;
+}
+.tdwhite{
+    border: black solid;
+    background-color: #d69664;
+}
