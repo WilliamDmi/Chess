@@ -14,7 +14,8 @@ window.addEventListener('load',()=> {
             if(i===0 || i===9)
             {
                 let header = document.createElement("th"); 
-                header.textContent = "1";
+                if(j!==0 && j!==9)
+                    header.textContent = String.fromCharCode(j + 64);
                 row.appendChild(header);
             }
             else
@@ -22,7 +23,7 @@ window.addEventListener('load',()=> {
                 if(j===0 || j===9)
                 {
                     let header = document.createElement("th"); 
-                    header.textContent = "1";
+                    header.textContent = i;
                     row.appendChild(header);
                 }
                 else
