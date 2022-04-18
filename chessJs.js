@@ -17,22 +17,72 @@ class Piece
     {
         let tdList = document.getElementsByTagName('td'); 
 
-        if(this.type == 'rook')
+        switch(this.type)
         {
+            case "rook" :
             for(let i = 0; i<tdList.length ; i++)
             {
                 if(this.position[0] == tdList[i].id[0])
-                {
-                    tdList[i].classList.add("selected");
-                }
+                    tdList[i].classList.add("move");
                 else if(this.position[1] == tdList[i].id[1])
-                {
-                    tdList[i].classList.add("selected");
-                }
+                        tdList[i].classList.add("move");
             }
-        }
+            break;
+            
+            case "queen" :
+            for(let i = 0; i<tdList.length ; i++)
+            {
+                    if(getLeftWalledPosition(tdList[i].id) == getLeftWalledPosition(this.position))
+                        tdList[i].classList.add("move");
+                    else if(getRightWalledPosition(tdList[i].id) == getRightWalledPosition(this.position))
+                        tdList[i].classList.add("move");
+            }
+            for(let i = 0; i<tdList.length ; i++)
+            {
+                    if(this.position[0] == tdList[i].id[0])
+                        tdList[i].classList.add("move");
+                    else if(this.position[1] == tdList[i].id[1])
+                            tdList[i].classList.add("move");
+            } 
+            break;
+            case "king" : 
+            break;
+            case "pawn" : 
+            break;
+            case "knight" : 
+            break;
+            case "bishop" : 
+            for(let i = 0; i<tdList.length ; i++)
+            {
+                if(getLeftWalledPosition(tdList[i].id) == getLeftWalledPosition(this.position))
+                   tdList[i].classList.add("move");
+                else if(getRightWalledPosition(tdList[i].id) == getRightWalledPosition(this.position))
+                    tdList[i].classList.add("move");
+            }
+            break;
+            
+        }  
     }
+}
 
+
+function getLeftWalledPosition(position)
+{
+    while(!(position[0] == "0" || position[1] == "0"))
+    {
+        position = (parseInt(position) - 11).toString().padStart(2, '0');
+    }
+       
+    return position;
+}
+function getRightWalledPosition(position)
+{
+    while(!(position[0] == "0" || position[1] == "7"))
+    {
+        position = (parseInt(position) - 9).toString().padStart(2, '0');
+    }
+    console.log(position);  
+    return position;
 }
 
 function resetPieces() 
@@ -47,6 +97,7 @@ function resetPieces()
     result.push(new Piece(7 + i.toString() , temp[i], WHITE ));
     result.push(new Piece(6 + i.toString() , "pawn", WHITE));
     }
+    result.push(new Piece( "44" , "queen", DARK ));
     return result;
 }
 
@@ -116,7 +167,6 @@ function onCellClick(event)
     let currentPiece = checkCellPiece(pieces , selectedCell.id);
     if(currentPiece != undefined)
         currentPiece.showMovement();
-    
 }
 
 function resetSelected()
@@ -124,8 +174,8 @@ function resetSelected()
     let tdList = document.getElementsByTagName('td'); 
     for(let tdIndex of tdList)
     {
+        tdIndex.classList.remove('move');
         tdIndex.classList.remove('selected');
-
     }
 }
 
@@ -163,7 +213,7 @@ function addImageByIndex(cell, color, index)
 
 
 window.addEventListener('load',createBoard);
-//new board + cvhange positions
+
 
 //catch (error)
 //{
