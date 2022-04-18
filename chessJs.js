@@ -46,6 +46,14 @@ class Piece
             } 
             break;
             case "king" : 
+            for(let i = 0; i<tdList.length ; i++)
+            {
+                if(parseInt(this.position)-1 == parseInt(tdList[i].id) || parseInt(this.position)+1 == parseInt(tdList[i].id) || parseInt(this.position)-11 == parseInt(tdList[i].id) || parseInt(this.position)-10 == parseInt(tdList[i].id)
+                || parseInt(this.position)-9 == parseInt(tdList[i].id) || parseInt(this.position)+11 == parseInt(tdList[i].id) || parseInt(this.position)+10 == parseInt(tdList[i].id) || parseInt(this.position)+9 == parseInt(tdList[i].id))
+                    tdList[i].classList.add("move");
+                
+            }
+
             break;
             case "pawn" : 
             break;
@@ -97,7 +105,7 @@ function resetPieces()
     result.push(new Piece(7 + i.toString() , temp[i], WHITE ));
     result.push(new Piece(6 + i.toString() , "pawn", WHITE));
     }
-    result.push(new Piece( "44" , "queen", DARK ));
+    result.push(new Piece( "44" , "knight", DARK ));
     return result;
 }
 
