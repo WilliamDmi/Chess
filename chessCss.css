@@ -34,12 +34,10 @@ th{
 }
 .tdBlack{
     background-color: #2b1b19;
-    background-image: url("images/blackKing.png");
     background-size:contain;
 }
 .tdwhite{
     background-color: #d69664;
-    background-image: url("images/whiteKing.png");
     background-size:contain;
 }
 .selected{

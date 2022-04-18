@@ -6,14 +6,33 @@ let pieces = [];
 
 class Piece 
 {
-    constructor(row, col, type, color) 
+    constructor(position, type, color) 
     {
-      this.row = row;
-      this.col = col;
+      this.position = position;
       this.type = type;
       this.color = color;
     }
     
+    showMovement()
+    {
+        let tdList = document.getElementsByTagName('td'); 
+
+        if(this.type == 'rook')
+        {
+            for(let i = 0; i<tdList.length ; i++)
+            {
+                if(this.position[0] == tdList[i].id[0])
+                {
+                    tdList[i].classList.add("selected");
+                }
+                else if(this.position[1] == tdList[i].id[1])
+                {
+                    tdList[i].classList.add("selected");
+                }
+            }
+        }
+    }
+
 }
 
 function resetPieces() 
@@ -23,10 +42,10 @@ function resetPieces()
     
     for(let i=0; i<8; i++)
     {
-    result.push(new Piece(0, i, temp[i], DARK ));
-    result.push(new Piece(1, i, "pawn", DARK));
-    result.push(new Piece(7, i, temp[i], WHITE ));
-    result.push(new Piece(6, i, "pawn", WHITE));
+    result.push(new Piece(0 + i.toString() , temp[i], DARK ));
+    result.push(new Piece(1 + i.toString() , "pawn", DARK));
+    result.push(new Piece(7 + i.toString() , temp[i], WHITE ));
+    result.push(new Piece(6 + i.toString() , "pawn", WHITE));
     }
     return result;
 }
@@ -67,8 +86,9 @@ function createBoard()
                         cell.className="tdBlack";
                     }
                     else cell.className="tdWhite";
-                    row.appendChild(cell);
+                    cell.id = (i-1).toString() + (j-1).toString();
 
+                    row.appendChild(cell);
                     cell.addEventListener('click', onCellClick);
                 }   
             }
@@ -82,18 +102,38 @@ function createBoard()
     pieces = resetPieces();
 
     for (let piece of pieces) {
-      addImage(tbl.rows[piece.row+1].cells[piece.col+1], piece.color, piece.type);
+      addImage(tbl.rows[parseInt(piece.position[0])+1].cells[parseInt(piece.position[1])+1], piece.color, piece.type);
     }
+
 }
 
 function onCellClick(event) 
 {
-    if (selectedCell !== undefined) {
-      selectedCell.classList.remove('selected');
-    }
+    resetSelected();
     selectedCell = event.currentTarget;
     selectedCell.classList.add('selected');
 
+    let currentPiece = checkCellPiece(pieces , selectedCell.id);
+    if(currentPiece != undefined)
+        currentPiece.showMovement();
+    
+}
+
+function resetSelected()
+{
+    let tdList = document.getElementsByTagName('td'); 
+    for(let tdIndex of tdList)
+    {
+        tdIndex.classList.remove('selected');
+
+    }
+}
+
+function checkCellPiece(pieces,position)
+{
+    for (let i = 0; i < pieces.length; i++) {
+        if (pieces[i].position == position) return pieces[i];
+      }
 }
 
 
@@ -101,7 +141,8 @@ function addImage(cell, color, name)
 {
     const img = document.createElement('img');
     img.src = 'images/' + color + '/' + name + '.png';
-    img.className="pieceImg";
+    img.classList.add("pieceImg");
+    img.classList.add(name);
     cell.appendChild(img);
 }
   
@@ -120,5 +161,12 @@ function addImageByIndex(cell, color, index)
     }
 }
 
+
 window.addEventListener('load',createBoard);
 //new board + cvhange positions
+
+//catch (error)
+//{
+//     if(!(error instanceof TypeError))
+//         alert ("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+// }
