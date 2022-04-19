@@ -2,7 +2,43 @@ const WHITE = 'white';
 const DARK = 'dark';
 
 let selectedCell;
-let pieces = [];
+//let pieces = [];
+let boardData;
+
+class BoardData
+{
+    constructor()
+    {
+        this.pieces  = this.resetPieces();
+    }
+
+    resetPieces() 
+    {
+        let result = [];
+        let temp =["rook","knight","bishop","queen","king","bishop","knight","rook"];
+        
+        for(let i=0; i<8; i++)
+        {
+        result.push(new Piece(0 + i.toString() , temp[i], DARK ));
+        result.push(new Piece(1 + i.toString() , "pawn", DARK));
+        result.push(new Piece(7 + i.toString() , temp[i], WHITE ));
+        result.push(new Piece(6 + i.toString() , "pawn", WHITE));
+        }
+        result.push(new Piece( "44" , "knight", DARK ));
+        result.push(new Piece( "43" , "king", DARK ));
+        return result;
+    }
+
+    checkCellPiece(pieces,position)
+    {
+        for (let i = 0; i < pieces.length; i++) 
+        {
+            if (pieces[i].position == position) return pieces[i];
+        }
+        return undefined;
+    }
+
+}
 
 class Piece 
 {
@@ -13,7 +49,7 @@ class Piece
       this.color = color;
     }
     
-    showMovement()
+    showPossibleMoves()
     {
         let tdList = document.getElementsByTagName('td'); 
 
@@ -22,57 +58,115 @@ class Piece
             case "rook" :
             for(let i = 0; i<tdList.length ; i++)
             {
-                if(this.position[0] == tdList[i].id[0])
-                    tdList[i].classList.add("move");
-                else if(this.position[1] == tdList[i].id[1])
-                        tdList[i].classList.add("move");
-            }
-            break;
-            
-            case "queen" :
-            for(let i = 0; i<tdList.length ; i++)
-            {
-                    if(getLeftWalledPosition(tdList[i].id) == getLeftWalledPosition(this.position))
-                        tdList[i].classList.add("move");
-                    else if(getRightWalledPosition(tdList[i].id) == getRightWalledPosition(this.position))
-                        tdList[i].classList.add("move");
-            }
-            for(let i = 0; i<tdList.length ; i++)
-            {
+                if(tdList[i].id != this.position)
+                {
                     if(this.position[0] == tdList[i].id[0])
                         tdList[i].classList.add("move");
                     else if(this.position[1] == tdList[i].id[1])
                             tdList[i].classList.add("move");
+                }
+            }
+            break;          
+            case "queen" :
+            for(let i = 0; i<tdList.length ; i++)
+            {
+                if(tdList[i].id != this.position)
+                {
+                    if(getLeftWalledPosition(tdList[i].id) == getLeftWalledPosition(this.position))
+                    tdList[i].classList.add("move");
+                    else if(getRightWalledPosition(tdList[i].id) == getRightWalledPosition(this.position))
+                        tdList[i].classList.add("move");
+                }
+            }
+            for(let i = 0; i<tdList.length ; i++)
+            {
+                if(tdList[i].id != this.position)
+                {
+                    if(this.position[0] == tdList[i].id[0])
+                        tdList[i].classList.add("move");
+                    else if(this.position[1] == tdList[i].id[1])
+                            tdList[i].classList.add("move");
+                }
             } 
             break;
             case "king" : 
             for(let i = 0; i<tdList.length ; i++)
             {
-                if(parseInt(this.position)-1 == parseInt(tdList[i].id) || parseInt(this.position)+1 == parseInt(tdList[i].id) || parseInt(this.position)-11 == parseInt(tdList[i].id) || parseInt(this.position)-10 == parseInt(tdList[i].id)
-                || parseInt(this.position)-9 == parseInt(tdList[i].id) || parseInt(this.position)+11 == parseInt(tdList[i].id) || parseInt(this.position)+10 == parseInt(tdList[i].id) || parseInt(this.position)+9 == parseInt(tdList[i].id))
-                    tdList[i].classList.add("move");
-                
+                if(diffrence(parseInt(this.position),parseInt(tdList[i].id)) == 1 || diffrence(parseInt(this.position),parseInt(tdList[i].id)) == 9 || diffrence(parseInt(this.position),parseInt(tdList[i].id)) == 11 || diffrence(parseInt(this.position),parseInt(tdList[i].id))== 10)
+                {
+                    if(boardData.checkCellPiece(boardData.pieces,tdList[i].id) == undefined)
+                        tdList[i].classList.add("move");
+                }
             }
 
             break;
-            case "pawn" : 
+            case "pawn" :
+                if(this.color == "white")
+                {
+                    for(let i = 0; i<tdList.length ; i++)
+                    {
+                        if((this.position[1] == tdList[i].id[1]) &&  parseInt(this.position[0])-1 == parseInt(tdList[i].id[0]))
+                        {   
+                            if(boardData.checkCellPiece(boardData.pieces,tdList[i].id) == undefined)
+                                tdList[i].classList.add("move");
+
+                            if(this.position[0]=="6")
+                            {
+                                if(boardData.checkCellPiece(boardData.pieces,tdList[i-8].id) == undefined)
+                                    tdList[i-8].classList.add("move");
+                            }
+                        }
+                    } 
+                } 
+                if(this.color == "dark")
+                {
+                    for(let i = 0; i<tdList.length ; i++)
+                    {
+                        if((this.position[1] == tdList[i].id[1]) &&  parseInt(this.position[0])+1 == parseInt(tdList[i].id[0]))
+                        {
+                            if(boardData.checkCellPiece(boardData.pieces,tdList[i].id) == undefined)
+                            tdList[i].classList.add("move");
+
+                            if(this.position[0]=="1")
+                            {
+                                if(boardData.checkCellPiece(boardData.pieces,tdList[i+8].id) == undefined)
+                                tdList[i+8].classList.add("move");
+                            }
+                        }
+                    } 
+                } 
             break;
             case "knight" : 
+            for(let i = 0; i<tdList.length ; i++)
+            {
+                if(diffrence(parseInt(this.position),parseInt(tdList[i].id)) == 21 || diffrence(parseInt(this.position),parseInt(tdList[i].id)) == 19 || diffrence(parseInt(this.position),parseInt(tdList[i].id)) == 12 || diffrence(parseInt(this.position),parseInt(tdList[i].id))== 8)
+                {
+                    if(boardData.checkCellPiece(boardData.pieces,tdList[i].id) == undefined)
+                        tdList[i].classList.add("move");
+                }
+                
+            }
             break;
             case "bishop" : 
             for(let i = 0; i<tdList.length ; i++)
             {
-                if(getLeftWalledPosition(tdList[i].id) == getLeftWalledPosition(this.position))
-                   tdList[i].classList.add("move");
-                else if(getRightWalledPosition(tdList[i].id) == getRightWalledPosition(this.position))
+                if(tdList[i].id != this.position)
+                {
+                    if(getLeftWalledPosition(tdList[i].id) == getLeftWalledPosition(this.position))
                     tdList[i].classList.add("move");
+                    else if(getRightWalledPosition(tdList[i].id) == getRightWalledPosition(this.position))
+                        tdList[i].classList.add("move");
+                }
             }
-            break;
-            
+            break;          
         }  
     }
 }
 
+function diffrence(a , b)
+{
+    return Math.abs(a-b);
+}
 
 function getLeftWalledPosition(position)
 {
@@ -88,25 +182,8 @@ function getRightWalledPosition(position)
     while(!(position[0] == "0" || position[1] == "7"))
     {
         position = (parseInt(position) - 9).toString().padStart(2, '0');
-    }
-    console.log(position);  
+    }  
     return position;
-}
-
-function resetPieces() 
-{
-    let result = [];
-    let temp =["rook","knight","bishop","queen","king","bishop","knight","rook"];
-    
-    for(let i=0; i<8; i++)
-    {
-    result.push(new Piece(0 + i.toString() , temp[i], DARK ));
-    result.push(new Piece(1 + i.toString() , "pawn", DARK));
-    result.push(new Piece(7 + i.toString() , temp[i], WHITE ));
-    result.push(new Piece(6 + i.toString() , "pawn", WHITE));
-    }
-    result.push(new Piece( "44" , "knight", DARK ));
-    return result;
 }
 
 
@@ -158,9 +235,9 @@ function createBoard()
     tbl.appendChild(tblBody);
     newDiv.appendChild(tbl);
 
-    pieces = resetPieces();
+    boardData = new BoardData();
 
-    for (let piece of pieces) {
+    for (let piece of boardData.pieces) {
       addImage(tbl.rows[parseInt(piece.position[0])+1].cells[parseInt(piece.position[1])+1], piece.color, piece.type);
     }
 
@@ -172,9 +249,9 @@ function onCellClick(event)
     selectedCell = event.currentTarget;
     selectedCell.classList.add('selected');
 
-    let currentPiece = checkCellPiece(pieces , selectedCell.id);
+    let currentPiece = boardData.checkCellPiece(boardData.pieces , selectedCell.id);
     if(currentPiece != undefined)
-        currentPiece.showMovement();
+        currentPiece.showPossibleMoves();
 }
 
 function resetSelected()
@@ -186,14 +263,6 @@ function resetSelected()
         tdIndex.classList.remove('selected');
     }
 }
-
-function checkCellPiece(pieces,position)
-{
-    for (let i = 0; i < pieces.length; i++) {
-        if (pieces[i].position == position) return pieces[i];
-      }
-}
-
 
 function addImage(cell, color, name) 
 {
