@@ -74,8 +74,6 @@ class Piece {
                     }
                     else break;
                 }
-
-
                 for (let j = parseInt(this.position, 8) + 8; (j / 8 != 7); j += 8) {
                     if (j >= 0 && j < 64) {
                         if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
