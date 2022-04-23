@@ -16,7 +16,7 @@ class BoardData {
             result.push(new Piece(6 + i.toString(), "pawn", WHITE));
         }
         result.push(new Piece("44", "knight", DARK));
-        result.push(new Piece("43", "rook", DARK));
+        result.push(new Piece("43", "queen", DARK));
         return result;
     }
 
@@ -87,20 +87,80 @@ class Piece {
 
                 break;
             case "queen":
-                for (let i = 0; i < tdList.length; i++) {
-                    if (tdList[i].id != this.position) {
-                        if (this.getLeftWalledPosition(tdList[i].id) == this.getLeftWalledPosition(this.position))
-                            tdList[i].classList.add("move");
-                        else if (this.getRightWalledPosition(tdList[i].id) == this.getRightWalledPosition(this.position))
-                            tdList[i].classList.add("move");
+                for (let j = parseInt(this.position, 8) + 1; j % 8 != 0; j++) {
+                    if (j >= 0 && j < 64) {
+                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
+                            break;
+                        tdList[j].classList.add("move");
                     }
                 }
-                for (let i = 0; i < tdList.length; i++) {
-                    if (tdList[i].id != this.position) {
-                        if (this.position[0] == tdList[i].id[0])
-                            tdList[i].classList.add("move");
-                        else if (this.position[1] == tdList[i].id[1])
-                            tdList[i].classList.add("move");
+
+
+                for (let j = parseInt(this.position, 8) - 1; j % 8 != 7; j--) {
+                    if (j >= 0 && j < 64) {
+                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
+                            break;
+                        tdList[j].classList.add("move");
+
+                    }
+                    else break;
+                }
+
+
+                for (let j = parseInt(this.position, 8) - 8; (j / 8 != 0); j -= 8) {
+                    if (j >= 0 && j < 64) {
+                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
+                            break;
+                        tdList[j].classList.add("move");
+
+                    }
+                    else break;
+                }
+                for (let j = parseInt(this.position, 8) + 8; (j / 8 != 7); j += 8) {
+                    if (j >= 0 && j < 64) {
+                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
+                            break;
+                        tdList[j].classList.add("move");
+
+                    }
+                    else break;
+                }
+                for (let j = parseInt(this.position, 8) + 9; j < 64 != 0; j+=9) {
+                    
+                    if (j >= 0 && j < 64) {
+                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
+                            break;
+                        tdList[j].classList.add("move");
+                    }
+                }
+
+
+                for (let j = parseInt(this.position, 8) - 9; j > 0 != 0; j-=9) {
+                    
+                    if (j >= 0 && j < 64) {
+                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
+                            break;
+                        tdList[j].classList.add("move");
+                    }
+                }
+
+
+                for (let j = parseInt(this.position, 8) + 7; j < 64 != 0; j+=7) {
+                    
+                    if (j >= 0 && j < 64) {
+                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
+                            break;
+                        tdList[j].classList.add("move");
+                    }
+                }
+
+
+                for (let j = parseInt(this.position, 8) - 7; j > 0 != 0; j-=7) {
+                    
+                    if (j >= 0 && j < 64) {
+                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
+                            break;
+                        tdList[j].classList.add("move");
                     }
                 }
                 break;
@@ -151,15 +211,46 @@ class Piece {
                 }
                 break;
             case "bishop":
-                for (let i = 0; i < tdList.length; i++) {
-                    if (tdList[i].id != this.position) {
-                        if (this.getLeftWalledPosition(tdList[i].id) == this.getLeftWalledPosition(this.position))
-                            tdList[i].classList.add("move");
-                        else if (this.getRightWalledPosition(tdList[i].id) == this.getRightWalledPosition(this.position))
-                            tdList[i].classList.add("move");
+
+                for (let j = parseInt(this.position, 8) + 9; j < 64 != 0; j+=9) {
+                    
+                    if (j >= 0 && j < 64) {
+                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
+                            break;
+                        tdList[j].classList.add("move");
                     }
                 }
-                break;
+
+
+                for (let j = parseInt(this.position, 8) - 9; j > 0 != 0; j-=9) {
+                    
+                    if (j >= 0 && j < 64) {
+                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
+                            break;
+                        tdList[j].classList.add("move");
+                    }
+                }
+
+
+                for (let j = parseInt(this.position, 8) + 7; j < 64 != 0; j+=7) {
+                    
+                    if (j >= 0 && j < 64) {
+                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
+                            break;
+                        tdList[j].classList.add("move");
+                    }
+                }
+
+
+                for (let j = parseInt(this.position, 8) - 7; j > 0 != 0; j-=7) {
+                    
+                    if (j >= 0 && j < 64) {
+                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
+                            break;
+                        tdList[j].classList.add("move");
+                    }
+                }
+
         }
     }
 
