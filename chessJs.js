@@ -51,6 +51,7 @@ function createBoard() {
     newDiv.appendChild(tbl);
 
     boardData = new BoardData();
+    
 
     for (let piece of boardData.pieces) {
         addImage(tbl.rows[parseInt(piece.position[0]) + 1].cells[parseInt(piece.position[1]) + 1], piece.color, piece.type);
@@ -75,6 +76,7 @@ function resetSelected() {
     for (let tdIndex of tdList) {
         tdIndex.classList.remove('move');
         tdIndex.classList.remove('selected');
+        tdIndex.classList.remove('eat');
     }
 }
 

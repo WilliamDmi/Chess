@@ -2,6 +2,7 @@ class BoardData {
     //
     constructor() {
         this.pieces = this.resetPieces();
+
     }
 
     //
@@ -16,14 +17,16 @@ class BoardData {
             result.push(new Piece(6 + i.toString(), "pawn", WHITE));
         }
         result.push(new Piece("44", "knight", DARK));
-        result.push(new Piece("43", "queen", DARK));
+        result.push(new Piece("43", "king", WHITE));
+        result.push(new Piece("47", "queen", WHITE));
         return result;
     }
 
     //
     checkCellPiece(pieces, position) {
         for (let i = 0; i < pieces.length; i++) {
-            if (pieces[i].position == position) return pieces[i];
+            if (pieces[i].position == position)
+                return pieces[i];
         }
         return undefined;
     }
@@ -40,218 +43,363 @@ class Piece {
 
     //
     showPossibleMoves() {
-        let tdList = document.getElementsByTagName('td');
+        let moves;
 
         switch (this.type) {
             case "rook":
 
-                for (let j = parseInt(this.position, 8) + 1; j % 8 != 0; j++) {
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
+                moves = this.returnRookMoves();
+                for (let move of moves) {
+                    if (boardData.checkCellPiece(boardData.pieces, move.id) != undefined) {
+
+                        if (boardData.checkCellPiece(boardData.pieces, move.id).color != this.color) {
+                            move.classList.add("eat");
+                        }
+                    }
+                    else {
+                        move.classList.add("move");
                     }
                 }
-
-
-                for (let j = parseInt(this.position, 8) - 1; j % 8 != 7; j--) {
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
-
-                    }
-                    else break;
-                }
-
-
-                for (let j = parseInt(this.position, 8) - 8; (j / 8 != 0); j -= 8) {
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
-
-                    }
-                    else break;
-                }
-                for (let j = parseInt(this.position, 8) + 8; (j / 8 != 7); j += 8) {
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
-
-                    }
-                    else break;
-                }
-
-
                 break;
             case "queen":
-                for (let j = parseInt(this.position, 8) + 1; j % 8 != 0; j++) {
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
+
+                moves = this.returnQueenMoves();
+                for (let move of moves) {
+                    if (boardData.checkCellPiece(boardData.pieces, move.id) != undefined) {
+
+                        if (boardData.checkCellPiece(boardData.pieces, move.id).color != this.color) {
+                            move.classList.add("eat");
+                        }
                     }
-                }
-
-
-                for (let j = parseInt(this.position, 8) - 1; j % 8 != 7; j--) {
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
-
-                    }
-                    else break;
-                }
-
-
-                for (let j = parseInt(this.position, 8) - 8; (j / 8 != 0); j -= 8) {
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
-
-                    }
-                    else break;
-                }
-                for (let j = parseInt(this.position, 8) + 8; (j / 8 != 7); j += 8) {
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
-
-                    }
-                    else break;
-                }
-                for (let j = parseInt(this.position, 8) + 9; j < 64 != 0; j+=9) {
-                    
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
-                    }
-                }
-
-
-                for (let j = parseInt(this.position, 8) - 9; j > 0 != 0; j-=9) {
-                    
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
-                    }
-                }
-
-
-                for (let j = parseInt(this.position, 8) + 7; j < 64 != 0; j+=7) {
-                    
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
-                    }
-                }
-
-
-                for (let j = parseInt(this.position, 8) - 7; j > 0 != 0; j-=7) {
-                    
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
+                    else {
+                        move.classList.add("move");
                     }
                 }
                 break;
             case "king":
-                for (let i = 0; i < tdList.length; i++) {
-                    if (diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 1 || diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 9 || diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 11 || diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 10) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[i].id) == undefined)
-                            tdList[i].classList.add("move");
+
+                moves = this.returnKingMoves();
+                for (let move of moves) {
+                    if (boardData.checkCellPiece(boardData.pieces, move.id) != undefined) {
+
+                        if (boardData.checkCellPiece(boardData.pieces, move.id).color != this.color) {
+                            move.classList.add("eat");
+                        }
+                    }
+                    else {
+                        move.classList.add("move");
                     }
                 }
-
                 break;
             case "pawn":
-                if (this.color == "white") {
-                    for (let i = 0; i < tdList.length; i++) {
-                        if ((this.position[1] == tdList[i].id[1]) && parseInt(this.position[0]) - 1 == parseInt(tdList[i].id[0])) {
-                            if (boardData.checkCellPiece(boardData.pieces, tdList[i].id) == undefined)
-                                tdList[i].classList.add("move");
 
-                            if (this.position[0] == "6") {
-                                if (boardData.checkCellPiece(boardData.pieces, tdList[i - 8].id) == undefined)
-                                    tdList[i - 8].classList.add("move");
-                            }
+                moves = this.returnPawnMoves();
+                for (let move of moves) {
+                    if (boardData.checkCellPiece(boardData.pieces, move.id) != undefined) {
+
+                        if (boardData.checkCellPiece(boardData.pieces, move.id).color != this.color) {
+                            move.classList.add("eat");
                         }
                     }
-                }
-                if (this.color == "dark") {
-                    for (let i = 0; i < tdList.length; i++) {
-                        if ((this.position[1] == tdList[i].id[1]) && parseInt(this.position[0]) + 1 == parseInt(tdList[i].id[0])) {
-                            if (boardData.checkCellPiece(boardData.pieces, tdList[i].id) == undefined)
-                                tdList[i].classList.add("move");
-
-                            if (this.position[0] == "1") {
-                                if (boardData.checkCellPiece(boardData.pieces, tdList[i + 8].id) == undefined)
-                                    tdList[i + 8].classList.add("move");
-                            }
-                        }
+                    else {
+                        move.classList.add("move");
                     }
                 }
                 break;
             case "knight":
-                for (let i = 0; i < tdList.length; i++) {
-                    if (diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 21 || diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 19 || diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 12 || diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 8) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[i].id) == undefined)
-                            tdList[i].classList.add("move");
-                    }
 
+                moves = this.returnKnightMoves();
+                for (let move of moves) {
+                    if (boardData.checkCellPiece(boardData.pieces, move.id) != undefined) {
+
+                        if (boardData.checkCellPiece(boardData.pieces, move.id).color != this.color) {
+                            move.classList.add("eat");
+                        }
+                    }
+                    else {
+                        move.classList.add("move");
+                    }
                 }
                 break;
             case "bishop":
 
-                for (let j = parseInt(this.position, 8) + 9; j < 64 != 0; j+=9) {
-                    
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
+                moves = this.returnBishopMoves();
+                for (let move of moves) {
+                    if (boardData.checkCellPiece(boardData.pieces, move.id) != undefined) {
+
+                        if (boardData.checkCellPiece(boardData.pieces, move.id).color != this.color) {
+                            move.classList.add("eat");
+                        }
+                    }
+                    else {
+                        move.classList.add("move");
                     }
                 }
+                break;
 
-
-                for (let j = parseInt(this.position, 8) - 9; j > 0 != 0; j-=9) {
-                    
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
-                    }
-                }
-
-
-                for (let j = parseInt(this.position, 8) + 7; j < 64 != 0; j+=7) {
-                    
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
-                    }
-                }
-
-
-                for (let j = parseInt(this.position, 8) - 7; j > 0 != 0; j-=7) {
-                    
-                    if (j >= 0 && j < 64) {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined)
-                            break;
-                        tdList[j].classList.add("move");
-                    }
-                }
 
         }
+    }
+
+    returnQueenMoves() {
+        let tdList = document.getElementsByTagName('td');
+        let moves = [];
+        for (let j = parseInt(this.position, 8) + 1; j % 8 != 0; j++) {
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+            }
+        }
+
+
+        for (let j = parseInt(this.position, 8) - 1; j % 8 != 7; j--) {
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+
+            }
+            else break;
+        }
+
+
+        for (let j = parseInt(this.position, 8) - 8; (j / 8 != 0); j -= 8) {
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+
+            }
+            else break;
+        }
+        for (let j = parseInt(this.position, 8) + 8; (j / 8 != 7); j += 8) {
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+
+            }
+            else break;
+        }
+        for (let j = parseInt(this.position, 8) + 9; j < 64 && j % 8 != 0; j += 9) {
+
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+            }
+        }
+
+
+        for (let j = parseInt(this.position, 8) - 9; j > 0 && j % 8 != 7; j -= 9) {
+
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+            }
+        }
+
+
+        for (let j = parseInt(this.position, 8) + 7; j < 64 && j % 8 != 7; j += 7) {
+
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+            }
+        }
+
+
+        for (let j = parseInt(this.position, 8) - 7; j > 0 && j % 8 != 0; j -= 7) {
+
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+            }
+        }
+        return moves;
+
+    }
+    returnKingMoves() {
+        let tdList = document.getElementsByTagName('td');
+        let moves = [];
+
+        for (let i = 0; i < tdList.length; i++) {
+            if (diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 1 || diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 9 || diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 11 || diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 10) {
+                moves.push(tdList[i]);
+            }
+        }
+
+        return moves;
+    }
+    returnRookMoves() {
+        let tdList = document.getElementsByTagName('td');
+        let moves = [];
+
+        for (let j = parseInt(this.position, 8) + 1; j % 8 != 0; j++) {
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+            }
+        }
+
+        for (let j = parseInt(this.position, 8) - 1; j % 8 != 7; j--) {
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+            }
+            else break;
+        }
+
+        for (let j = parseInt(this.position, 8) - 8; (j / 8 != 0); j -= 8) {
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+
+            }
+            else break;
+        }
+
+        for (let j = parseInt(this.position, 8) + 8; (j / 8 != 7); j += 8) {
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+
+            }
+            else break;
+        }
+
+        return moves;
+
+    }
+    returnBishopMoves() {
+        let tdList = document.getElementsByTagName('td');
+        let moves = [];
+
+        for (let j = parseInt(this.position, 8) + 9; j < 64 && j % 8 != 0; j += 9) {
+
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+            }
+        }
+
+
+        for (let j = parseInt(this.position, 8) - 9; j > 0 && j % 8 != 7; j -= 9) {
+
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+            }
+        }
+
+
+        for (let j = parseInt(this.position, 8) + 7; j < 64 && j % 8 != 7; j += 7) {
+
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+            }
+        }
+
+
+        for (let j = parseInt(this.position, 8) - 7; j > 0 && j % 8 != 0; j -= 7) {
+
+            if (j >= 0 && j < 64) {
+                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                    moves.push(tdList[j]);
+                    break;
+                }
+                moves.push(tdList[j]);
+            }
+        }
+        return moves;
+
+    }
+    returnKnightMoves() {
+        let tdList = document.getElementsByTagName('td');
+        let moves = [];
+
+        for (let i = 0; i < tdList.length; i++) {
+            if (diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 21 || diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 19 || diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 12 || diffrence(parseInt(this.position), parseInt(tdList[i].id)) == 8) {
+                moves.push(tdList[i]);
+            }
+
+        }
+        return moves;
+    }
+    returnPawnMoves() {
+        let tdList = document.getElementsByTagName('td');
+        let moves = [];
+
+        if (this.color == "white") {
+            for (let i = 0; i < tdList.length; i++) {
+                if ((this.position[1] == tdList[i].id[1]) && parseInt(this.position[0]) - 1 == parseInt(tdList[i].id[0])) {
+                    if (boardData.checkCellPiece(boardData.pieces, tdList[i].id) == undefined)
+                        moves.push(tdList[i]);
+
+                    if (this.position[0] == "6") {
+                        if (boardData.checkCellPiece(boardData.pieces, tdList[i - 8].id) == undefined)
+                            moves.push(tdList[i - 8]);
+                    }
+                }
+            }
+        }
+        if (this.color == "dark") {
+            for (let i = 0; i < tdList.length; i++) {
+                if ((this.position[1] == tdList[i].id[1]) && parseInt(this.position[0]) + 1 == parseInt(tdList[i].id[0])) {
+                    if (boardData.checkCellPiece(boardData.pieces, tdList[i].id) == undefined)
+                        moves.push(tdList[i]);
+
+                    if (this.position[0] == "1") {
+                        if (boardData.checkCellPiece(boardData.pieces, tdList[i + 8].id) == undefined)
+                            moves.push(tdList[i + 8]);
+                    }
+                }
+            }
+        }
+        return moves;
+
     }
 
     //

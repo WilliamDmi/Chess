@@ -55,3 +55,10 @@ th{
     width: 86px;
     height: 86px;
 }
+
+.eat{
+    border-radius: 1px;
+    box-shadow:inset 0px 0px 0px 8px rgba(128, 8, 14, 0.5);
+    width: 86px;
+    height: 86px;
+}
