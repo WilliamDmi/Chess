@@ -59,13 +59,36 @@ function createBoard() {
 
 }
 
+
+function eatEnemyEvent(event)
+{
+    console.log("hi");
+    selectedCell = event.currentTarget;
+    let selectedPiece = boardData.checkCellPiece(document.getElementsByClassName("selected")[0].id);
+
+    boardData.PieceLocationInArray(selectedCell.id);
+    boardData.pieces.splice(boardData.PieceLocationInArray(selectedCell.id) , 1);
+
+
+    selectedPiece.position = selectedCell.id;
+    selectedCell.removeChild(selectedCell.firstChild);
+
+    document.getElementsByClassName("selected")[0].removeChild(document.getElementsByClassName("selected")[0].firstChild);
+
+    addImage(selectedCell, selectedPiece.color , selectedPiece.type);
+
+
+    resetSelected();
+}
+
+
 //
 function onCellClick(event) {
     resetSelected();
     selectedCell = event.currentTarget;
     selectedCell.classList.add('selected');
 
-    let currentPiece = boardData.checkCellPiece(boardData.pieces, selectedCell.id);
+    let currentPiece = boardData.checkCellPiece(selectedCell.id);
     if (currentPiece != undefined)
         currentPiece.showPossibleMoves();
 }
@@ -77,6 +100,8 @@ function resetSelected() {
         tdIndex.classList.remove('move');
         tdIndex.classList.remove('selected');
         tdIndex.classList.remove('eat');
+        tdIndex.removeEventListener("click", eatEnemyEvent);
+        tdIndex.addEventListener("click", onCellClick);
     }
 }
 
@@ -89,20 +114,6 @@ function addImage(cell, color, name) {
     cell.appendChild(img);
 }
 
-//
-function addImageByIndex(cell, color, index) {
-    if (index === 1 || index === 8) {
-        addImage(cell, color, 'rook');
-    } else if (index === 2 || index === 7) {
-        addImage(cell, color, 'knight');
-    } else if (index === 3 || index === 6) {
-        addImage(cell, color, 'bishop');
-    } else if (index === 4) {
-        addImage(cell, color, 'queen');
-    } else if (index === 5) {
-        addImage(cell, color, 'king');
-    }
-}
 
 
 window.addEventListener('load', createBoard);

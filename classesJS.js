@@ -23,12 +23,24 @@ class BoardData {
     }
 
     //
-    checkCellPiece(pieces, position) {
-        for (let i = 0; i < pieces.length; i++) {
-            if (pieces[i].position == position)
-                return pieces[i];
+    checkCellPiece(position) {
+        for (let i = 0; i < this.pieces.length; i++) {
+            if (this.pieces[i].position == position)
+                return this.pieces[i];
         }
         return undefined;
+    }
+
+    PieceLocationInArray(position)
+    {
+        for(let i = 0 ; i<this.pieces.length ; i++)
+        {
+            if(this.pieces[i].position == position)
+            {
+                return i;
+            }
+        }
+
     }
 
 }
@@ -47,13 +59,14 @@ class Piece {
 
         switch (this.type) {
             case "rook":
-
                 moves = this.returnRookMoves();
                 for (let move of moves) {
-                    if (boardData.checkCellPiece(boardData.pieces, move.id) != undefined) {
-
-                        if (boardData.checkCellPiece(boardData.pieces, move.id).color != this.color) {
+                    if (boardData.checkCellPiece(move.id) != undefined) {
+                        
+                        if (boardData.checkCellPiece(move.id).color != this.color) {
                             move.classList.add("eat");
+                            move.removeEventListener("click", onCellClick);
+                            move.addEventListener("click", eatEnemyEvent);
                         }
                     }
                     else {
@@ -65,10 +78,12 @@ class Piece {
 
                 moves = this.returnQueenMoves();
                 for (let move of moves) {
-                    if (boardData.checkCellPiece(boardData.pieces, move.id) != undefined) {
+                    if (boardData.checkCellPiece(move.id) != undefined) {
 
-                        if (boardData.checkCellPiece(boardData.pieces, move.id).color != this.color) {
+                        if (boardData.checkCellPiece(move.id).color != this.color) {
                             move.classList.add("eat");
+                            move.removeEventListener("click", onCellClick);
+                            move.addEventListener("click", eatEnemyEvent);
                         }
                     }
                     else {
@@ -80,10 +95,12 @@ class Piece {
 
                 moves = this.returnKingMoves();
                 for (let move of moves) {
-                    if (boardData.checkCellPiece(boardData.pieces, move.id) != undefined) {
+                    if (boardData.checkCellPiece(move.id) != undefined) {
 
-                        if (boardData.checkCellPiece(boardData.pieces, move.id).color != this.color) {
+                        if (boardData.checkCellPiece(move.id).color != this.color) {
                             move.classList.add("eat");
+                            move.removeEventListener("click", onCellClick);
+                            move.addEventListener("click", eatEnemyEvent);
                         }
                     }
                     else {
@@ -95,10 +112,12 @@ class Piece {
 
                 moves = this.returnPawnMoves();
                 for (let move of moves) {
-                    if (boardData.checkCellPiece(boardData.pieces, move.id) != undefined) {
+                    if (boardData.checkCellPiece(move.id) != undefined) {
 
-                        if (boardData.checkCellPiece(boardData.pieces, move.id).color != this.color) {
+                        if (boardData.checkCellPiece(move.id).color != this.color) {
                             move.classList.add("eat");
+                            move.removeEventListener("click", onCellClick);
+                            move.addEventListener("click", eatEnemyEvent);
                         }
                     }
                     else {
@@ -110,10 +129,12 @@ class Piece {
 
                 moves = this.returnKnightMoves();
                 for (let move of moves) {
-                    if (boardData.checkCellPiece(boardData.pieces, move.id) != undefined) {
+                    if (boardData.checkCellPiece(move.id) != undefined) {
 
-                        if (boardData.checkCellPiece(boardData.pieces, move.id).color != this.color) {
+                        if (boardData.checkCellPiece(move.id).color != this.color) {
                             move.classList.add("eat");
+                            move.removeEventListener("click", onCellClick);
+                            move.addEventListener("click", eatEnemyEvent);
                         }
                     }
                     else {
@@ -125,10 +146,12 @@ class Piece {
 
                 moves = this.returnBishopMoves();
                 for (let move of moves) {
-                    if (boardData.checkCellPiece(boardData.pieces, move.id) != undefined) {
+                    if (boardData.checkCellPiece(move.id) != undefined) {
 
-                        if (boardData.checkCellPiece(boardData.pieces, move.id).color != this.color) {
+                        if (boardData.checkCellPiece(move.id).color != this.color) {
                             move.classList.add("eat");
+                            move.removeEventListener("click", onCellClick);
+                            move.addEventListener("click", eatEnemyEvent);
                         }
                     }
                     else {
@@ -146,7 +169,7 @@ class Piece {
         let moves = [];
         for (let j = parseInt(this.position, 8) + 1; j % 8 != 0; j++) {
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -157,7 +180,7 @@ class Piece {
 
         for (let j = parseInt(this.position, 8) - 1; j % 8 != 7; j--) {
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -170,7 +193,7 @@ class Piece {
 
         for (let j = parseInt(this.position, 8) - 8; (j / 8 != 0); j -= 8) {
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -181,7 +204,7 @@ class Piece {
         }
         for (let j = parseInt(this.position, 8) + 8; (j / 8 != 7); j += 8) {
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -193,7 +216,7 @@ class Piece {
         for (let j = parseInt(this.position, 8) + 9; j < 64 && j % 8 != 0; j += 9) {
 
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -205,7 +228,7 @@ class Piece {
         for (let j = parseInt(this.position, 8) - 9; j > 0 && j % 8 != 7; j -= 9) {
 
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -217,7 +240,7 @@ class Piece {
         for (let j = parseInt(this.position, 8) + 7; j < 64 && j % 8 != 7; j += 7) {
 
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -229,7 +252,7 @@ class Piece {
         for (let j = parseInt(this.position, 8) - 7; j > 0 && j % 8 != 0; j -= 7) {
 
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -257,7 +280,7 @@ class Piece {
 
         for (let j = parseInt(this.position, 8) + 1; j % 8 != 0; j++) {
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -267,7 +290,7 @@ class Piece {
 
         for (let j = parseInt(this.position, 8) - 1; j % 8 != 7; j--) {
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -278,7 +301,7 @@ class Piece {
 
         for (let j = parseInt(this.position, 8) - 8; (j / 8 != 0); j -= 8) {
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -290,7 +313,7 @@ class Piece {
 
         for (let j = parseInt(this.position, 8) + 8; (j / 8 != 7); j += 8) {
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -310,7 +333,7 @@ class Piece {
         for (let j = parseInt(this.position, 8) + 9; j < 64 && j % 8 != 0; j += 9) {
 
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -322,7 +345,7 @@ class Piece {
         for (let j = parseInt(this.position, 8) - 9; j > 0 && j % 8 != 7; j -= 9) {
 
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -334,7 +357,7 @@ class Piece {
         for (let j = parseInt(this.position, 8) + 7; j < 64 && j % 8 != 7; j += 7) {
 
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -346,7 +369,7 @@ class Piece {
         for (let j = parseInt(this.position, 8) - 7; j > 0 && j % 8 != 0; j -= 7) {
 
             if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(boardData.pieces, tdList[j].id) != undefined) {
+                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
                     moves.push(tdList[j]);
                     break;
                 }
@@ -375,11 +398,11 @@ class Piece {
         if (this.color == "white") {
             for (let i = 0; i < tdList.length; i++) {
                 if ((this.position[1] == tdList[i].id[1]) && parseInt(this.position[0]) - 1 == parseInt(tdList[i].id[0])) {
-                    if (boardData.checkCellPiece(boardData.pieces, tdList[i].id) == undefined)
+                    if (boardData.checkCellPiece(tdList[i].id) == undefined)
                         moves.push(tdList[i]);
 
                     if (this.position[0] == "6") {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[i - 8].id) == undefined)
+                        if (boardData.checkCellPiece(tdList[i - 8].id) == undefined)
                             moves.push(tdList[i - 8]);
                     }
                 }
@@ -388,11 +411,11 @@ class Piece {
         if (this.color == "dark") {
             for (let i = 0; i < tdList.length; i++) {
                 if ((this.position[1] == tdList[i].id[1]) && parseInt(this.position[0]) + 1 == parseInt(tdList[i].id[0])) {
-                    if (boardData.checkCellPiece(boardData.pieces, tdList[i].id) == undefined)
+                    if (boardData.checkCellPiece(tdList[i].id) == undefined)
                         moves.push(tdList[i]);
 
                     if (this.position[0] == "1") {
-                        if (boardData.checkCellPiece(boardData.pieces, tdList[i + 8].id) == undefined)
+                        if (boardData.checkCellPiece(tdList[i + 8].id) == undefined)
                             moves.push(tdList[i + 8]);
                     }
                 }
