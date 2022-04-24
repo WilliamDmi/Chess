@@ -9,13 +9,13 @@ class BoardData {
     //creates the defualt pieces array 
     resetPieces() {
         let result = [];
-        let temp = ["rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"];
+        let temp = [ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK];
 
         for (let i = 0; i < 8; i++) {
             result.push(new Piece(0 + i.toString(), temp[i], DARK));
-            result.push(new Piece(1 + i.toString(), "pawn", DARK));
+            result.push(new Piece(1 + i.toString(), PAWN, DARK));
             result.push(new Piece(7 + i.toString(), temp[i], WHITE));
-            result.push(new Piece(6 + i.toString(), "pawn", WHITE));
+            result.push(new Piece(6 + i.toString(), PAWN, WHITE));
         }
 
         return result;
@@ -53,74 +53,22 @@ class Piece {
     //shows the possible moves of each piece when its the currect turn
     showPossibleMoves() {
         if ((this.color == WHITE && boardData.whiteTurn) || (this.color == DARK && !boardData.whiteTurn)) {
+            
             let moves;
-
             switch (this.type) {
-                case "rook":
+                case ROOK:
                     moves = this.returnRookMoves();
-                    for (let move of moves) {
-                        if (boardData.checkCellPiece(move.id) != undefined) {
-
-                            if (boardData.checkCellPiece(move.id).color != this.color) {
-                                move.classList.add("eat");
-                                move.removeEventListener("click", onCellClick);
-                                move.addEventListener("click", eatEnemyEvent);
-                            }
-                        }
-                        else {
-                            move.removeEventListener("click", onCellClick);
-                            move.addEventListener("click", movePieceEvent);
-                            move.classList.add("move");
-                        }
-                    }
                     break;
-                case "queen":
-
-                    moves = this.returnQueenMoves();
-                    for (let move of moves) {
-                        if (boardData.checkCellPiece(move.id) != undefined) {
-
-                            if (boardData.checkCellPiece(move.id).color != this.color) {
-                                move.classList.add("eat");
-                                move.removeEventListener("click", onCellClick);
-                                move.addEventListener("click", eatEnemyEvent);
-                            }
-                        }
-                        else {
-                            move.removeEventListener("click", onCellClick);
-                            move.addEventListener("click", movePieceEvent);
-                            move.classList.add("move");
-                        }
-                    }
+                case QUEEN: 
+                    moves = this.returnQueenMoves();   
                     break;
-                case "king":
-
+                case KING:
                     moves = this.returnKingMoves();
-                    for (let move of moves) {
-                        if (boardData.checkCellPiece(move.id) != undefined) {
-
-                            if (boardData.checkCellPiece(move.id).color != this.color) {
-                                move.classList.add("eat");
-                                move.removeEventListener("click", onCellClick);
-                                move.addEventListener("click", eatEnemyEvent);
-                            }
-                        }
-                        else {
-                            move.removeEventListener("click", onCellClick);
-                            move.addEventListener("click", movePieceEvent);
-                            move.classList.add("move");
-                        }
-                    }
                     break;
-                case "pawn":
-
+                case PAWN:
                     let eatMoves = this.returnPawnEat();
                     moves = this.returnPawnMoves();
-                    for (let move of moves) {
-                        move.removeEventListener("click", onCellClick);
-                        move.addEventListener("click", movePieceEvent);
-                        move.classList.add("move");
-                    }
+
                     for (let eatMove of eatMoves) {
                         if (boardData.checkCellPiece(eatMove.id) != undefined) {
                             eatMove.classList.add("eat");
@@ -129,148 +77,37 @@ class Piece {
                         }
                     }
                     break;
-                case "knight":
-
+                case KNIGHT:
                     moves = this.returnKnightMoves();
-                    for (let move of moves) {
-                        if (boardData.checkCellPiece(move.id) != undefined) {
-
-                            if (boardData.checkCellPiece(move.id).color != this.color) {
-                                move.classList.add("eat");
-                                move.removeEventListener("click", onCellClick);
-                                move.addEventListener("click", eatEnemyEvent);
-                            }
-                        }
-                        else {
-                            move.removeEventListener("click", onCellClick);
-                            move.addEventListener("click", movePieceEvent);
-                            move.classList.add("move");
-                        }
-                    }
-                    break;
-                case "bishop":
-
+                case BISHOP:
                     moves = this.returnBishopMoves();
-                    for (let move of moves) {
-                        if (boardData.checkCellPiece(move.id) != undefined) {
-
-                            if (boardData.checkCellPiece(move.id).color != this.color) {
-                                move.classList.add("eat");
-                                move.removeEventListener("click", onCellClick);
-                                move.addEventListener("click", eatEnemyEvent);
-                            }
-                        }
-                        else {
-                            move.classList.add("move");
-                            move.removeEventListener("click", onCellClick);
-                            move.addEventListener("click", movePieceEvent);
-                        }
-                    }
                     break;
+            }
 
+            //goes through each of the moves and puts the event listener and css class that fits
+            for (let move of moves) {
+                if (boardData.checkCellPiece(move.id) != undefined) {
 
+                    if (boardData.checkCellPiece(move.id).color != this.color) {
+                        move.classList.add("eat");
+                        move.removeEventListener("click", onCellClick);
+                        move.addEventListener("click", eatEnemyEvent);
+                    }
+                }
+                else {
+                    move.removeEventListener("click", onCellClick);
+                    move.addEventListener("click", movePieceEvent);
+                    move.classList.add("move");
+                }
             }
         }
     }
 
     //returns the queen's possible moves and attacks
-    returnQueenMoves() {
-        let tdList = document.getElementsByTagName('td');
-        let moves = [];
-        for (let j = parseInt(this.position, 8) + 1; j % 8 != 0; j++) {
-            if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
-                    moves.push(tdList[j]);
-                    break;
-                }
-                moves.push(tdList[j]);
-            }
-        }
-
-
-        for (let j = parseInt(this.position, 8) - 1; j % 8 != 7; j--) {
-            if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
-                    moves.push(tdList[j]);
-                    break;
-                }
-                moves.push(tdList[j]);
-
-            }
-            else break;
-        }
-
-
-        for (let j = parseInt(this.position, 8) - 8; (j / 8 != 0); j -= 8) {
-            if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
-                    moves.push(tdList[j]);
-                    break;
-                }
-                moves.push(tdList[j]);
-
-            }
-            else break;
-        }
-        for (let j = parseInt(this.position, 8) + 8; (j / 8 != 7); j += 8) {
-            if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
-                    moves.push(tdList[j]);
-                    break;
-                }
-                moves.push(tdList[j]);
-
-            }
-            else break;
-        }
-        for (let j = parseInt(this.position, 8) + 9; j < 64 && j % 8 != 0; j += 9) {
-
-            if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
-                    moves.push(tdList[j]);
-                    break;
-                }
-                moves.push(tdList[j]);
-            }
-        }
-
-
-        for (let j = parseInt(this.position, 8) - 9; j > 0 && j % 8 != 7; j -= 9) {
-
-            if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
-                    moves.push(tdList[j]);
-                    break;
-                }
-                moves.push(tdList[j]);
-            }
-        }
-
-
-        for (let j = parseInt(this.position, 8) + 7; j < 64 && j % 8 != 7; j += 7) {
-
-            if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
-                    moves.push(tdList[j]);
-                    break;
-                }
-                moves.push(tdList[j]);
-            }
-        }
-
-
-        for (let j = parseInt(this.position, 8) - 7; j > 0 && j % 8 != 0; j -= 7) {
-
-            if (j >= 0 && j < 64) {
-                if (boardData.checkCellPiece(tdList[j].id) != undefined) {
-                    moves.push(tdList[j]);
-                    break;
-                }
-                moves.push(tdList[j]);
-            }
-        }
+    returnQueenMoves() { 
+        //the queens movement is based of the rook + the bishop so we just combine them
+        let moves = this.returnBishopMoves().concat(this.returnRookMoves());
         return moves;
-
     }
 
     //returns the king's possible moves and attacks

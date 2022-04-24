@@ -1,5 +1,12 @@
-const WHITE = 'white';
-const DARK = 'dark';
+const WHITE = "white";
+const DARK = "dark";
+
+const ROOK = "rook";
+const QUEEN = "queen";
+const KING = "king";
+const KNIGHT = "knight";
+const PAWN = "pawn";
+const BISHOP = "bishop";
 
 let selectedCell;
 let boardData;
@@ -51,7 +58,6 @@ function createBoard() {
         }
         tblBody.appendChild(row);
     }
-
     tbl.appendChild(tblBody);
     newDiv.appendChild(tbl);
 
@@ -130,7 +136,6 @@ function addImage(cell, color, name) {
     const img = document.createElement('img');
     img.src = 'images/' + color + '/' + name + '.png';
     img.classList.add("pieceImg");
-    img.classList.add(name);
     cell.appendChild(img);
 }
 
