@@ -40,6 +40,8 @@ function createBoard() {
                         cell.className = "tdBlack";
                     }
                     else cell.className = "tdWhite";
+                    
+                    //puts the position of the cell in the id
                     cell.id = (i - 1).toString() + (j - 1).toString();
 
                     row.appendChild(cell);
