@@ -1,5 +1,5 @@
 class BoardData {
-    
+
     constructor() {
         this.pieces = this.resetPieces();
         this.whiteTurn = true;
@@ -52,8 +52,7 @@ class Piece {
 
     //shows the possible moves of each piece when its the currect turn
     showPossibleMoves() {
-        if((this.color == WHITE && boardData.whiteTurn) || (this.color == DARK && !boardData.whiteTurn))
-        {
+        if ((this.color == WHITE && boardData.whiteTurn) || (this.color == DARK && !boardData.whiteTurn)) {
             let moves;
 
             switch (this.type) {
@@ -123,11 +122,10 @@ class Piece {
                         move.classList.add("move");
                     }
                     for (let eatMove of eatMoves) {
-                        if(boardData.checkCellPiece(eatMove.id) != undefined)
-                        {
-                        eatMove.classList.add("eat");
-                        eatMove.removeEventListener("click", onCellClick);
-                        eatMove.addEventListener("click", eatEnemyEvent);
+                        if (boardData.checkCellPiece(eatMove.id) != undefined) {
+                            eatMove.classList.add("eat");
+                            eatMove.removeEventListener("click", onCellClick);
+                            eatMove.addEventListener("click", eatEnemyEvent);
                         }
                     }
                     break;
@@ -412,27 +410,24 @@ class Piece {
         return moves;
     }
 
-
     //returns the Pawn's possible attacks
-    returnPawnEat(){
+    returnPawnEat() {
         let tdList = document.getElementsByTagName('td');
         let moves = [];
 
-        if(this.color == WHITE)
-        {
+        if (this.color == WHITE) {
             for (let i = 0; i < tdList.length; i++) {
                 if (parseInt(this.position) - parseInt(tdList[i].id) == 9 || parseInt(this.position) - parseInt(tdList[i].id) == 11) {
-                    if(boardData.checkCellPiece(tdList[i].id)&& this.color != boardData.checkCellPiece(tdList[i].id).color)
+                    if (boardData.checkCellPiece(tdList[i].id) && this.color != boardData.checkCellPiece(tdList[i].id).color)
                         moves.push(tdList[i]);
                 }
             }
         }
 
-        if(this.color == DARK)
-        {
+        if (this.color == DARK) {
             for (let i = 0; i < tdList.length; i++) {
                 if (parseInt(this.position) - parseInt(tdList[i].id) == -9 || parseInt(this.position) - parseInt(tdList[i].id) == -11) {
-                    if(boardData.checkCellPiece(tdList[i].id)&& this.color != boardData.checkCellPiece(tdList[i].id).color)
+                    if (boardData.checkCellPiece(tdList[i].id) && this.color != boardData.checkCellPiece(tdList[i].id).color)
                         moves.push(tdList[i]);
                 }
             }

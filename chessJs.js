@@ -68,15 +68,15 @@ function eatEnemyEvent(event) {
     selectedCell = event.currentTarget;
     let selectedPiece = boardData.checkCellPiece(document.getElementsByClassName("selected")[0].id);
 
+    //remove the piece that has been eaten
     boardData.PieceLocationInArray(selectedCell.id);
     boardData.pieces.splice(boardData.PieceLocationInArray(selectedCell.id), 1);
 
-
     selectedPiece.position = selectedCell.id;
+
+    //remove both images and adds a new updated one
     selectedCell.removeChild(selectedCell.firstChild);
-
     document.getElementsByClassName("selected")[0].removeChild(document.getElementsByClassName("selected")[0].firstChild);
-
     addImage(selectedCell, selectedPiece.color, selectedPiece.type);
 
     boardData.whiteTurn = !boardData.whiteTurn;
@@ -90,15 +90,13 @@ function movePieceEvent(event) {
 
     selectedPiece.position = selectedCell.id;
 
+    //removes the image and adds a new one updated one
     document.getElementsByClassName("selected")[0].removeChild(document.getElementsByClassName("selected")[0].firstChild);
-
     addImage(selectedCell, selectedPiece.color, selectedPiece.type);
 
     boardData.whiteTurn = !boardData.whiteTurn;
     resetSelected();
 }
-
-
 
 
 //an event that accurs when you select an element on the board, this event selects the target and shows it in the css and reset the previous selected  element
