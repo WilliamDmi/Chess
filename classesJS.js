@@ -1,12 +1,12 @@
 class BoardData {
-    //
+    
     constructor() {
         this.pieces = this.resetPieces();
         this.whiteTurn = true;
 
     }
 
-    //
+    //creates the defualt pieces array 
     resetPieces() {
         let result = [];
         let temp = ["rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"];
@@ -21,7 +21,7 @@ class BoardData {
         return result;
     }
 
-    //
+    //gets a position and returns the piece in that position if exists
     checkCellPiece(position) {
         for (let i = 0; i < this.pieces.length; i++) {
             if (this.pieces[i].position == position)
@@ -30,6 +30,7 @@ class BoardData {
         return undefined;
     }
 
+    //gets a position and returns the index of the piece in the pieces array
     PieceLocationInArray(position) {
         for (let i = 0; i < this.pieces.length; i++) {
             if (this.pieces[i].position == position) {
@@ -42,14 +43,14 @@ class BoardData {
 }
 
 class Piece {
-    //
+
     constructor(position, type, color) {
         this.position = position;
         this.type = type;
         this.color = color;
     }
 
-    //
+    //shows the possible moves of each piece when its the currect turn
     showPossibleMoves() {
         if((this.color == WHITE && boardData.whiteTurn) || (this.color == DARK && !boardData.whiteTurn))
         {
@@ -174,6 +175,7 @@ class Piece {
         }
     }
 
+    //returns the queen's possible moves and attacks
     returnQueenMoves() {
         let tdList = document.getElementsByTagName('td');
         let moves = [];
@@ -272,6 +274,8 @@ class Piece {
         return moves;
 
     }
+
+    //returns the king's possible moves and attacks
     returnKingMoves() {
         let tdList = document.getElementsByTagName('td');
         let moves = [];
@@ -284,6 +288,8 @@ class Piece {
 
         return moves;
     }
+
+    //returns the rook's possible moves and attacks
     returnRookMoves() {
         let tdList = document.getElementsByTagName('td');
         let moves = [];
@@ -336,6 +342,8 @@ class Piece {
         return moves;
 
     }
+
+    //returns the bishop's possible moves and attacks
     returnBishopMoves() {
         let tdList = document.getElementsByTagName('td');
         let moves = [];
@@ -389,6 +397,8 @@ class Piece {
         return moves;
 
     }
+
+    //returns the knight's possible moves and attacks
     returnKnightMoves() {
         let tdList = document.getElementsByTagName('td');
         let moves = [];
@@ -402,6 +412,8 @@ class Piece {
         return moves;
     }
 
+
+    //returns the Pawn's possible attacks
     returnPawnEat(){
         let tdList = document.getElementsByTagName('td');
         let moves = [];
@@ -410,7 +422,8 @@ class Piece {
         {
             for (let i = 0; i < tdList.length; i++) {
                 if (parseInt(this.position) - parseInt(tdList[i].id) == 9 || parseInt(this.position) - parseInt(tdList[i].id) == 11) {
-                    moves.push(tdList[i]);
+                    if(boardData.checkCellPiece(tdList[i].id)&& this.color != boardData.checkCellPiece(tdList[i].id).color)
+                        moves.push(tdList[i]);
                 }
             }
         }
@@ -419,7 +432,8 @@ class Piece {
         {
             for (let i = 0; i < tdList.length; i++) {
                 if (parseInt(this.position) - parseInt(tdList[i].id) == -9 || parseInt(this.position) - parseInt(tdList[i].id) == -11) {
-                    moves.push(tdList[i]);
+                    if(boardData.checkCellPiece(tdList[i].id)&& this.color != boardData.checkCellPiece(tdList[i].id).color)
+                        moves.push(tdList[i]);
                 }
             }
         }
@@ -427,6 +441,7 @@ class Piece {
 
     }
 
+    //returns the Pawn's possible moves
     returnPawnMoves() {
         let tdList = document.getElementsByTagName('td');
         let moves = [];
@@ -458,21 +473,5 @@ class Piece {
             }
         }
         return moves;
-    }
-
-    //
-    getLeftWalledPosition(position) {
-        while (!(position[0] == "0" || position[1] == "0")) {
-            position = (parseInt(position) - 11).toString().padStart(2, '0');
-        }
-        return position;
-    }
-
-    //
-    getRightWalledPosition(position) {
-        while (!(position[0] == "0" || position[1] == "7")) {
-            position = (parseInt(position) - 9).toString().padStart(2, '0');
-        }
-        return position;
     }
 }

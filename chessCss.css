@@ -32,8 +32,8 @@ th{
 
     align-items: center;
     justify-content: center;
-    height: 100%;
-    width: 100%;
+    width: 88px;
+    height: 88px;
 
 }
 .tdBlack{
@@ -45,20 +45,18 @@ th{
     background-size:contain;
 }
 .selected {
-    border: solid red 3px !important;
-    width: 86px;
-    height: 86px;
+    border-radius: 1px;
+    box-shadow:inset 0px 0px 0px 8px rgba(30, 8, 128, 0.5);
+
 }
 .move{
     border-radius: 1px;
     box-shadow:inset 0px 0px 0px 8px rgba(30, 8, 128, 0.5);
-    width: 86px;
-    height: 86px;
+
 }
 
 .eat{
     border-radius: 1px;
     box-shadow:inset 0px 0px 0px 8px rgba(128, 8, 14, 0.5);
-    width: 86px;
-    height: 86px;
+
 }
