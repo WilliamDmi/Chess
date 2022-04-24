@@ -16,9 +16,7 @@ class BoardData {
             result.push(new Piece(7 + i.toString(), temp[i], WHITE));
             result.push(new Piece(6 + i.toString(), "pawn", WHITE));
         }
-        result.push(new Piece("44", "knight", DARK));
-        result.push(new Piece("43", "king", WHITE));
-        result.push(new Piece("47", "queen", WHITE));
+
         return result;
     }
 
@@ -70,6 +68,8 @@ class Piece {
                         }
                     }
                     else {
+                        move.removeEventListener("click", onCellClick);
+                        move.addEventListener("click", movePiece);
                         move.classList.add("move");
                     }
                 }
@@ -87,6 +87,8 @@ class Piece {
                         }
                     }
                     else {
+                        move.removeEventListener("click", onCellClick);
+                        move.addEventListener("click", movePiece);
                         move.classList.add("move");
                     }
                 }
@@ -104,6 +106,8 @@ class Piece {
                         }
                     }
                     else {
+                        move.removeEventListener("click", onCellClick);
+                        move.addEventListener("click", movePiece);
                         move.classList.add("move");
                     }
                 }
@@ -121,6 +125,8 @@ class Piece {
                         }
                     }
                     else {
+                        move.removeEventListener("click", onCellClick);
+                        move.addEventListener("click", movePiece);
                         move.classList.add("move");
                     }
                 }
@@ -138,6 +144,8 @@ class Piece {
                         }
                     }
                     else {
+                        move.removeEventListener("click", onCellClick);
+                        move.addEventListener("click", movePiece);
                         move.classList.add("move");
                     }
                 }
@@ -156,6 +164,8 @@ class Piece {
                     }
                     else {
                         move.classList.add("move");
+                        move.removeEventListener("click", onCellClick);
+                        move.addEventListener("click", movePiece);
                     }
                 }
                 break;

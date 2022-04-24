@@ -62,7 +62,6 @@ function createBoard() {
 
 function eatEnemyEvent(event)
 {
-    console.log("hi");
     selectedCell = event.currentTarget;
     let selectedPiece = boardData.checkCellPiece(document.getElementsByClassName("selected")[0].id);
 
@@ -80,6 +79,24 @@ function eatEnemyEvent(event)
 
     resetSelected();
 }
+
+
+function movePiece(event)
+{
+    selectedCell = event.currentTarget;
+    let selectedPiece = boardData.checkCellPiece(document.getElementsByClassName("selected")[0].id);
+
+    selectedPiece.position = selectedCell.id;
+
+    document.getElementsByClassName("selected")[0].removeChild(document.getElementsByClassName("selected")[0].firstChild);
+
+    addImage(selectedCell, selectedPiece.color , selectedPiece.type);
+
+
+    resetSelected();
+}
+
+
 
 
 //
@@ -100,6 +117,7 @@ function resetSelected() {
         tdIndex.classList.remove('move');
         tdIndex.classList.remove('selected');
         tdIndex.classList.remove('eat');
+        tdIndex.removeEventListener("click", movePiece);
         tdIndex.removeEventListener("click", eatEnemyEvent);
         tdIndex.addEventListener("click", onCellClick);
     }
