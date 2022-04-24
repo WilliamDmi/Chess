@@ -11,6 +11,7 @@ function diffrence(a, b) {
 
 //
 function createBoard() {
+
     const newDiv = document.createElement("div");
     newDiv.className = "mainBody";
     document.body.appendChild(newDiv);
@@ -51,7 +52,7 @@ function createBoard() {
     newDiv.appendChild(tbl);
 
     boardData = new BoardData();
-    
+
 
     for (let piece of boardData.pieces) {
         addImage(tbl.rows[parseInt(piece.position[0]) + 1].cells[parseInt(piece.position[1]) + 1], piece.color, piece.type);
@@ -60,13 +61,12 @@ function createBoard() {
 }
 
 
-function eatEnemyEvent(event)
-{
+function eatEnemyEvent(event) {
     selectedCell = event.currentTarget;
     let selectedPiece = boardData.checkCellPiece(document.getElementsByClassName("selected")[0].id);
 
     boardData.PieceLocationInArray(selectedCell.id);
-    boardData.pieces.splice(boardData.PieceLocationInArray(selectedCell.id) , 1);
+    boardData.pieces.splice(boardData.PieceLocationInArray(selectedCell.id), 1);
 
 
     selectedPiece.position = selectedCell.id;
@@ -74,15 +74,14 @@ function eatEnemyEvent(event)
 
     document.getElementsByClassName("selected")[0].removeChild(document.getElementsByClassName("selected")[0].firstChild);
 
-    addImage(selectedCell, selectedPiece.color , selectedPiece.type);
+    addImage(selectedCell, selectedPiece.color, selectedPiece.type);
 
-
+    boardData.whiteTurn = !boardData.whiteTurn;
     resetSelected();
 }
 
 
-function movePiece(event)
-{
+function movePieceEvent(event) {
     selectedCell = event.currentTarget;
     let selectedPiece = boardData.checkCellPiece(document.getElementsByClassName("selected")[0].id);
 
@@ -90,9 +89,9 @@ function movePiece(event)
 
     document.getElementsByClassName("selected")[0].removeChild(document.getElementsByClassName("selected")[0].firstChild);
 
-    addImage(selectedCell, selectedPiece.color , selectedPiece.type);
+    addImage(selectedCell, selectedPiece.color, selectedPiece.type);
 
-
+    boardData.whiteTurn = !boardData.whiteTurn;
     resetSelected();
 }
 
@@ -117,7 +116,7 @@ function resetSelected() {
         tdIndex.classList.remove('move');
         tdIndex.classList.remove('selected');
         tdIndex.classList.remove('eat');
-        tdIndex.removeEventListener("click", movePiece);
+        tdIndex.removeEventListener("click", movePieceEvent);
         tdIndex.removeEventListener("click", eatEnemyEvent);
         tdIndex.addEventListener("click", onCellClick);
     }

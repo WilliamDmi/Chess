@@ -2,6 +2,7 @@ class BoardData {
     //
     constructor() {
         this.pieces = this.resetPieces();
+        this.whiteTurn = true;
 
     }
 
@@ -29,12 +30,9 @@ class BoardData {
         return undefined;
     }
 
-    PieceLocationInArray(position)
-    {
-        for(let i = 0 ; i<this.pieces.length ; i++)
-        {
-            if(this.pieces[i].position == position)
-            {
+    PieceLocationInArray(position) {
+        for (let i = 0; i < this.pieces.length; i++) {
+            if (this.pieces[i].position == position) {
                 return i;
             }
         }
@@ -53,124 +51,126 @@ class Piece {
 
     //
     showPossibleMoves() {
-        let moves;
+        if((this.color == WHITE && boardData.whiteTurn) || (this.color == DARK && !boardData.whiteTurn))
+        {
+            let moves;
 
-        switch (this.type) {
-            case "rook":
-                moves = this.returnRookMoves();
-                for (let move of moves) {
-                    if (boardData.checkCellPiece(move.id) != undefined) {
-                        
-                        if (boardData.checkCellPiece(move.id).color != this.color) {
-                            move.classList.add("eat");
+            switch (this.type) {
+                case "rook":
+                    moves = this.returnRookMoves();
+                    for (let move of moves) {
+                        if (boardData.checkCellPiece(move.id) != undefined) {
+
+                            if (boardData.checkCellPiece(move.id).color != this.color) {
+                                move.classList.add("eat");
+                                move.removeEventListener("click", onCellClick);
+                                move.addEventListener("click", eatEnemyEvent);
+                            }
+                        }
+                        else {
                             move.removeEventListener("click", onCellClick);
-                            move.addEventListener("click", eatEnemyEvent);
+                            move.addEventListener("click", movePieceEvent);
+                            move.classList.add("move");
                         }
                     }
-                    else {
-                        move.removeEventListener("click", onCellClick);
-                        move.addEventListener("click", movePiece);
-                        move.classList.add("move");
-                    }
-                }
-                break;
-            case "queen":
+                    break;
+                case "queen":
 
-                moves = this.returnQueenMoves();
-                for (let move of moves) {
-                    if (boardData.checkCellPiece(move.id) != undefined) {
+                    moves = this.returnQueenMoves();
+                    for (let move of moves) {
+                        if (boardData.checkCellPiece(move.id) != undefined) {
 
-                        if (boardData.checkCellPiece(move.id).color != this.color) {
-                            move.classList.add("eat");
+                            if (boardData.checkCellPiece(move.id).color != this.color) {
+                                move.classList.add("eat");
+                                move.removeEventListener("click", onCellClick);
+                                move.addEventListener("click", eatEnemyEvent);
+                            }
+                        }
+                        else {
                             move.removeEventListener("click", onCellClick);
-                            move.addEventListener("click", eatEnemyEvent);
+                            move.addEventListener("click", movePieceEvent);
+                            move.classList.add("move");
                         }
                     }
-                    else {
-                        move.removeEventListener("click", onCellClick);
-                        move.addEventListener("click", movePiece);
-                        move.classList.add("move");
-                    }
-                }
-                break;
-            case "king":
+                    break;
+                case "king":
 
-                moves = this.returnKingMoves();
-                for (let move of moves) {
-                    if (boardData.checkCellPiece(move.id) != undefined) {
+                    moves = this.returnKingMoves();
+                    for (let move of moves) {
+                        if (boardData.checkCellPiece(move.id) != undefined) {
 
-                        if (boardData.checkCellPiece(move.id).color != this.color) {
-                            move.classList.add("eat");
+                            if (boardData.checkCellPiece(move.id).color != this.color) {
+                                move.classList.add("eat");
+                                move.removeEventListener("click", onCellClick);
+                                move.addEventListener("click", eatEnemyEvent);
+                            }
+                        }
+                        else {
                             move.removeEventListener("click", onCellClick);
-                            move.addEventListener("click", eatEnemyEvent);
+                            move.addEventListener("click", movePieceEvent);
+                            move.classList.add("move");
                         }
                     }
-                    else {
+                    break;
+                case "pawn":
+
+                    let eatMoves = this.returnPawnEat();
+                    moves = this.returnPawnMoves();
+                    for (let move of moves) {
                         move.removeEventListener("click", onCellClick);
-                        move.addEventListener("click", movePiece);
+                        move.addEventListener("click", movePieceEvent);
                         move.classList.add("move");
                     }
-                }
-                break;
-            case "pawn":
-
-                moves = this.returnPawnMoves();
-                for (let move of moves) {
-                    if (boardData.checkCellPiece(move.id) != undefined) {
-
-                        if (boardData.checkCellPiece(move.id).color != this.color) {
-                            move.classList.add("eat");
-                            move.removeEventListener("click", onCellClick);
-                            move.addEventListener("click", eatEnemyEvent);
+                    for (let eatMove of eatMoves) {
+                        if(boardData.checkCellPiece(eatMove.id) != undefined)
+                        {
+                        eatMove.classList.add("eat");
+                        eatMove.removeEventListener("click", onCellClick);
+                        eatMove.addEventListener("click", eatEnemyEvent);
                         }
                     }
-                    else {
-                        move.removeEventListener("click", onCellClick);
-                        move.addEventListener("click", movePiece);
-                        move.classList.add("move");
-                    }
-                }
-                break;
-            case "knight":
+                    break;
+                case "knight":
 
-                moves = this.returnKnightMoves();
-                for (let move of moves) {
-                    if (boardData.checkCellPiece(move.id) != undefined) {
+                    moves = this.returnKnightMoves();
+                    for (let move of moves) {
+                        if (boardData.checkCellPiece(move.id) != undefined) {
 
-                        if (boardData.checkCellPiece(move.id).color != this.color) {
-                            move.classList.add("eat");
+                            if (boardData.checkCellPiece(move.id).color != this.color) {
+                                move.classList.add("eat");
+                                move.removeEventListener("click", onCellClick);
+                                move.addEventListener("click", eatEnemyEvent);
+                            }
+                        }
+                        else {
                             move.removeEventListener("click", onCellClick);
-                            move.addEventListener("click", eatEnemyEvent);
+                            move.addEventListener("click", movePieceEvent);
+                            move.classList.add("move");
                         }
                     }
-                    else {
-                        move.removeEventListener("click", onCellClick);
-                        move.addEventListener("click", movePiece);
-                        move.classList.add("move");
-                    }
-                }
-                break;
-            case "bishop":
+                    break;
+                case "bishop":
 
-                moves = this.returnBishopMoves();
-                for (let move of moves) {
-                    if (boardData.checkCellPiece(move.id) != undefined) {
+                    moves = this.returnBishopMoves();
+                    for (let move of moves) {
+                        if (boardData.checkCellPiece(move.id) != undefined) {
 
-                        if (boardData.checkCellPiece(move.id).color != this.color) {
-                            move.classList.add("eat");
+                            if (boardData.checkCellPiece(move.id).color != this.color) {
+                                move.classList.add("eat");
+                                move.removeEventListener("click", onCellClick);
+                                move.addEventListener("click", eatEnemyEvent);
+                            }
+                        }
+                        else {
+                            move.classList.add("move");
                             move.removeEventListener("click", onCellClick);
-                            move.addEventListener("click", eatEnemyEvent);
+                            move.addEventListener("click", movePieceEvent);
                         }
                     }
-                    else {
-                        move.classList.add("move");
-                        move.removeEventListener("click", onCellClick);
-                        move.addEventListener("click", movePiece);
-                    }
-                }
-                break;
+                    break;
 
 
+            }
         }
     }
 
@@ -401,6 +401,32 @@ class Piece {
         }
         return moves;
     }
+
+    returnPawnEat(){
+        let tdList = document.getElementsByTagName('td');
+        let moves = [];
+
+        if(this.color == WHITE)
+        {
+            for (let i = 0; i < tdList.length; i++) {
+                if (parseInt(this.position) - parseInt(tdList[i].id) == 9 || parseInt(this.position) - parseInt(tdList[i].id) == 11) {
+                    moves.push(tdList[i]);
+                }
+            }
+        }
+
+        if(this.color == DARK)
+        {
+            for (let i = 0; i < tdList.length; i++) {
+                if (parseInt(this.position) - parseInt(tdList[i].id) == -9 || parseInt(this.position) - parseInt(tdList[i].id) == -11) {
+                    moves.push(tdList[i]);
+                }
+            }
+        }
+        return moves;
+
+    }
+
     returnPawnMoves() {
         let tdList = document.getElementsByTagName('td');
         let moves = [];
@@ -432,7 +458,6 @@ class Piece {
             }
         }
         return moves;
-
     }
 
     //
