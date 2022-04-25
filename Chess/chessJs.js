@@ -8,6 +8,8 @@ const KNIGHT = "knight";
 const PAWN = "pawn";
 const BISHOP = "bishop";
 
+const moveSound = new Audio("sound/move.mp3");
+
 let selectedCell;
 let boardData;
 
@@ -47,7 +49,7 @@ function createBoard() {
                         cell.className = "tdBlack";
                     }
                     else cell.className = "tdWhite";
-                    
+
                     //puts the position of the cell in the id
                     cell.id = (i - 1).toString() + (j - 1).toString();
 
@@ -86,6 +88,7 @@ function eatEnemyEvent(event) {
     selectedCell.removeChild(selectedCell.firstChild);
     document.getElementsByClassName("selected")[0].removeChild(document.getElementsByClassName("selected")[0].firstChild);
     addImage(selectedCell, selectedPiece.color, selectedPiece.type);
+    moveSound.play();
 
     boardData.whiteTurn = !boardData.whiteTurn;
     resetSelected();
@@ -101,6 +104,7 @@ function movePieceEvent(event) {
     //removes the image and adds a new one updated one
     document.getElementsByClassName("selected")[0].removeChild(document.getElementsByClassName("selected")[0].firstChild);
     addImage(selectedCell, selectedPiece.color, selectedPiece.type);
+    moveSound.play();
 
     boardData.whiteTurn = !boardData.whiteTurn;
     resetSelected();

@@ -53,14 +53,14 @@ class Piece {
     //shows the possible moves of each piece when its the currect turn
     showPossibleMoves() {
         if ((this.color == WHITE && boardData.whiteTurn) || (this.color == DARK && !boardData.whiteTurn)) {
-            
+
             let moves;
             switch (this.type) {
                 case ROOK:
                     moves = this.returnRookMoves();
                     break;
-                case QUEEN: 
-                    moves = this.returnQueenMoves();   
+                case QUEEN:
+                    moves = this.returnQueenMoves();
                     break;
                 case KING:
                     moves = this.returnKingMoves();
@@ -79,6 +79,7 @@ class Piece {
                     break;
                 case KNIGHT:
                     moves = this.returnKnightMoves();
+                    break;
                 case BISHOP:
                     moves = this.returnBishopMoves();
                     break;
@@ -104,7 +105,7 @@ class Piece {
     }
 
     //returns the queen's possible moves and attacks
-    returnQueenMoves() { 
+    returnQueenMoves() {
         //the queens movement is based of the rook + the bishop so we just combine them
         let moves = this.returnBishopMoves().concat(this.returnRookMoves());
         return moves;
