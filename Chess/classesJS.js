@@ -3,6 +3,8 @@ class BoardData {
     constructor() {
         this.pieces = this.resetPieces();
         this.whiteTurn = true;
+        this.whiteWins = 0;
+        this.blackWins = 0;
 
     }
 
@@ -19,6 +21,23 @@ class BoardData {
         }
 
         return result;
+    }
+
+    //resets the game
+    resetGame()
+    {
+        this.pieces = this.resetPieces();
+        this.whiteTurn = true;
+
+        let tdList = document.getElementsByTagName('td');
+        for (let tdIndex of tdList) {
+            if(tdIndex.firstChild != null)
+                tdIndex.removeChild(tdIndex.firstChild)
+        }
+        for (let piece of this.pieces) {
+            addImage(this.getCellByPosition(piece.position), piece.color, piece.type);
+        }
+        resetSelected();
     }
 
     //gets a position and returns the piece in that position if exists
@@ -40,6 +59,35 @@ class BoardData {
 
     }
 
+    //adds a win to the winner's color
+    addWin(color) {
+
+        if(color == WHITE)
+        {
+            this.whiteWins ++;
+        }
+        else this.blackWins ++;
+
+        let tdList = document.getElementsByTagName('td');
+        for (let tdIndex of tdList) {
+            tdIndex.removeEventListener("click", movePieceEvent);
+            tdIndex.removeEventListener("click", eatEnemyEvent);
+            tdIndex.removeEventListener("click", onCellClick);
+        }
+        console.log(this.whiteWins + "-" + this.blackWins);
+
+        this.resetGame();
+    }
+
+    //get a position and return the cell in that position
+    getCellByPosition(position)
+    {
+        let tdList = document.getElementsByTagName('td');
+        for (let tdIndex of tdList) {
+            if(tdIndex.id == position)
+                return tdIndex;
+        }
+    }
 }
 
 class Piece {

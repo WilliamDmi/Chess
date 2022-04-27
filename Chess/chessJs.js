@@ -75,8 +75,19 @@ function createBoard() {
 //an event that accurs when you select an enemy target to eat, this event moves the selected piece to the enemies location,
 //deletes the enemy and updates the images.
 function eatEnemyEvent(event) {
+
     selectedCell = event.currentTarget;
     let selectedPiece = boardData.checkCellPiece(document.getElementsByClassName("selected")[0].id);
+
+    
+
+    //if the king was eaten end the game
+    if(boardData.checkCellPiece(selectedCell.id).type == KING)
+    {   
+        resetSelected();
+        boardData.addWin(boardData.checkCellPiece(selectedCell.id).color);   
+        return;
+    }
 
     //remove the piece that has been eaten
     boardData.PieceLocationInArray(selectedCell.id);
